@@ -1,0 +1,86 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbShopModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'dbShop.dbo.Cars_shop' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Cars_shop">
+    <Key>
+      <PropertyRef Name="CarID" />
+    </Key>
+    <Property Name="CarID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" />
+    <Property Name="Type" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+    <Property Name="Color" Type="nvarchar" MaxLength="50" />
+    <Property Name="ImageUrl" Type="varchar" MaxLength="250" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'dbShop.dbo.Cart_PC' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="Cart_PC">
+    <Key>
+      <PropertyRef Name="PCID" />
+    </Key>
+    <Property Name="PCID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CPU" Type="nvarchar" MaxLength="50" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="PC_shop">
+    <Key>
+      <PropertyRef Name="PCID" />
+    </Key>
+    <Property Name="PCID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="CPU" Type="nvarchar" MaxLength="50" />
+    <Property Name="GPU" Type="nvarchar" MaxLength="50" />
+    <Property Name="RAM" Type="nvarchar" MaxLength="50" />
+    <Property Name="Storage" Type="nvarchar" MaxLength="50" />
+    <Property Name="Storage_type" Type="bit" />
+    <Property Name="ImageUrl" Type="varchar" MaxLength="250" />
+    <Property Name="Price" Type="nvarchar" MaxLength="50" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <Association Name="FK_Cart_PC_PC_shop">
+    <End Role="PC_shop" Type="Self.PC_shop" Multiplicity="1" />
+    <End Role="Cart_PC" Type="Self.Cart_PC" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PC_shop">
+        <PropertyRef Name="PCID" />
+      </Principal>
+      <Dependent Role="Cart_PC">
+        <PropertyRef Name="PCID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbShopModelStoreContainer">
+    <EntitySet Name="PC_shop" EntityType="Self.PC_shop" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Cars_shop" EntityType="Self.Cars_shop" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Cars_shop].[CarID] AS [CarID], 
+    [Cars_shop].[Name] AS [Name], 
+    [Cars_shop].[Type] AS [Type], 
+    [Cars_shop].[Price] AS [Price], 
+    [Cars_shop].[Color] AS [Color], 
+    [Cars_shop].[ImageUrl] AS [ImageUrl]
+    FROM [dbo].[Cars_shop] AS [Cars_shop]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="Cart_PC" EntityType="Self.Cart_PC" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [Cart_PC].[PCID] AS [PCID], 
+    [Cart_PC].[CPU] AS [CPU], 
+    [Cart_PC].[Price] AS [Price]
+    FROM [dbo].[Cart_PC] AS [Cart_PC]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK_Cart_PC_PC_shop" Association="Self.FK_Cart_PC_PC_shop">
+      <End Role="PC_shop" EntitySet="PC_shop" />
+      <End Role="Cart_PC" EntitySet="Cart_PC" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

@@ -1,0 +1,69 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="dbShopModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="PC_shop">
+    <Key>
+      <PropertyRef Name="PCID" />
+    </Key>
+    <Property Name="PCID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CPU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="GPU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="RAM" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Storage" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Storage_type" Type="Boolean" />
+    <Property Name="ImageUrl" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Cart_PC" Relationship="Self.FK_Cart_PC_PC_shop" FromRole="PC_shop" ToRole="Cart_PC" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="Cars_shop">
+    <Key>
+      <PropertyRef Name="CarID" />
+    </Key>
+    <Property Name="CarID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Type" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Color" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ImageUrl" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Cart_PC">
+    <Key>
+      <PropertyRef Name="PCID" />
+    </Key>
+    <Property Name="PCID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CPU" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Price" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="PC_shop" Relationship="Self.FK_Cart_PC_PC_shop" FromRole="Cart_PC" ToRole="PC_shop" />
+  </EntityType>
+  <Association Name="FK_Cart_PC_PC_shop">
+    <End Role="PC_shop" Type="Self.PC_shop" Multiplicity="1" />
+    <End Role="Cart_PC" Type="Self.Cart_PC" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="PC_shop">
+        <PropertyRef Name="PCID" />
+      </Principal>
+      <Dependent Role="Cart_PC">
+        <PropertyRef Name="PCID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="dbShopEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="PC_shop" EntityType="Self.PC_shop" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+    <EntitySet Name="Cars_shop" EntityType="Self.Cars_shop" />
+    <EntitySet Name="Cart_PC" EntityType="Self.Cart_PC" />
+    <AssociationSet Name="FK_Cart_PC_PC_shop" Association="Self.FK_Cart_PC_PC_shop">
+      <End Role="PC_shop" EntitySet="PC_shop" />
+      <End Role="Cart_PC" EntitySet="Cart_PC" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
